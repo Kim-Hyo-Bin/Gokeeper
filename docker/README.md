@@ -53,4 +53,14 @@ Then run the server as usual with that volume mounted.
 
 ## Build context
 
-`.dockerignore` lives at the **repository root** because Docker applies it relative to the build context, not next to the Dockerfile.
+The **context must be the repository root** (the `.` at the end). Paths like `go.mod` and `docker/entrypoint.sh` are resolved from that directory.
+
+```bash
+# Good (from repo root)
+docker build -f docker/Dockerfile -t gokeeper .
+
+# Wrong — context is only docker/, so go.mod and paths are missing
+cd docker && docker build -t gokeeper .
+```
+
+`.dockerignore` at the repo root applies to that context.
