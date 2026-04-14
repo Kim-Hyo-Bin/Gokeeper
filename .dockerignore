@@ -1,0 +1,7 @@
+# Build: docker build -f docker/Dockerfile -t gokeeper .
+.git
+.github
+data
+*.db
+.idea
+.vscode
