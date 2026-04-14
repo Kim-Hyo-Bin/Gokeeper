@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gokeeper-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - test.com
+    secretName: gokeeper-tls-secret
+  rules:
+  - host: test.com
+    http:
+      #Do not allow [issue, revoke]
+      paths:
+      - path: /v1/licenses/
+        pathType: Prefix
+        backend:
+          service:
+            name: gokeeper-service
+            port:
+              number: 8080
+      - path: /v1/licenses/verify
+        pathType: Exact
+        backend:
+          service:
+            name: gokeeper-service
+            port:
+              number: 8080
+      - path: /health
+        pathType: Exact
+        backend:
+          service:
+            name: gokeeper-service
+            port:
+              number: 8080
